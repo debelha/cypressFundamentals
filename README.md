@@ -1,5 +1,5 @@
-# cypress
-Projects related to my independent Cypress study
+# cypressAgilizei
+Repository containing projects from a [Cypress test automation course](https://www.youtube.com/playlist?list=PLnUo-Rbc3jjztMO4K8b-px4NE-630VNKY), including practical examples of automated tests for web applications
 
 <br>
 
