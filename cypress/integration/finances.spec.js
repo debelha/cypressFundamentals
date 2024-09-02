@@ -60,11 +60,3 @@ context('Dev Finances Agilizei', () => {
          cy.get('#data-table tbody tr').should('have.length', 0)
     });
 });
-
-
-
-
-
-
-
-

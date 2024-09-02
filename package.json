@@ -4,7 +4,8 @@
   "description": "Projects related to my independent Cypress study",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "cypress:run:mobile": "npx cypress run --config viewportWidth=412,viewportHeight=915",
+    "cypress:run": "npx cypress run"
   },
   "keywords": [],
   "author": "",
@@ -13,3 +14,4 @@
     "cypress": "^6.7.0"
   }
 }
+
