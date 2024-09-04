@@ -1,12 +1,16 @@
 /// <reference types="cypress" />
 
-import {format} from '../support/utils'
+import {format, prepareLocalStorage } from '../support/utils'
 
 context('Dev Finances Agilizei', () => {
 
    beforeEach(() => {
-    cy.visit('https://devfinance-agilizei.netlify.app/')
-    cy.get('#data-table tbody tr').should('have.length', 0)
+    cy.visit('https://devfinance-agilizei.netlify.app/', {
+        onBeforeLoad: (win) => {
+            prepareLocalStorage(win)
+        }
+    })
+
     })
 
     it('Cadastrar entradas', () => {
@@ -15,7 +19,7 @@ context('Dev Finances Agilizei', () => {
         cy.get('[name=amount]').type(12) //atributo
         cy.get('[type=date]').type('2024-03-17') //atributo
         cy.get('button').contains('Salvar').click() //valor contido
-        cy.get('#data-table tbody tr').should('have.length', 1)
+        cy.get('#data-table tbody tr').should('have.length', 3)
     });
 
     it('Cadastrar saídas', () => {
@@ -24,37 +28,20 @@ context('Dev Finances Agilizei', () => {
         cy.get('[name=amount]').type(-12) //atributo
         cy.get('[type=date]').type('2024-03-17') //atributo
         cy.get('button').contains('Salvar').click() //valor contido
-        cy.get('#data-table tbody tr').should('have.length', 1)
+        cy.get('#data-table tbody tr').should('have.length', 3)
     });
 
     it('Remover entradas e saidas', () => {
-        const entrada = 'Mesada'
-        const saida = "KinderOvo"
-
-        cy.get('#transaction .button').click() //id + classe
-        cy.get('#description').type(entrada) //id
-        cy.get('[name=amount]').type(100) //atributo
-        cy.get('[type=date]').type('2024-03-17') //atributo
-        cy.get('button').contains('Salvar').click() //valor contido
-        cy.get('#data-table tbody tr').should('have.length', 1)
-
-        cy.get('#transaction .button').click() //id + classe
-        cy.get('#description').type(saida) //id
-        cy.get('[name=amount]').type(-35) //atributo
-        cy.get('[type=date]').type('2024-03-17') //atributo
-        cy.get('button').contains('Salvar').click() //valor contido
-        cy.get('#data-table tbody tr').should('have.length', 2)
-
         //estratégia 1: 
         cy.get('td.description')
-         .contains(entrada)
+         .contains("Mesada")
          .parent()
          .find('img[onclick*=remove]')    
          .click()
 
          //estratégia 2:
          cy.get('td.description')
-         .contains(saida)
+         .contains("Suco Kapo")
          .siblings()
          .children('img[onclick*=remove]')
          .click()
@@ -62,7 +49,7 @@ context('Dev Finances Agilizei', () => {
          cy.get('#data-table tbody tr').should('have.length', 0)
     });
 
-    it.only('Validar saldo com diversas transações', () => {
+    it('Validar saldo com diversas transações', () => {
         //entrada
         cy.get('#transaction .button').click() 
         cy.get('#description').type('Mesada') 
